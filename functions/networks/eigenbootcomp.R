@@ -1,12 +1,12 @@
 # ----------------------------------------------------------------------
 # [Title]: Function to compare the eigenvalues distribution of adjacency
-# matrices based on bootstraped se estimation, from a singular value 
+# matrices based on bootstraped SE estimation, from a singular value 
 # decomposition.
 # [Date]: 12 Jan 2013     [Loc]: Sevilla
 # Pedro Jordano.
 # ......................................................................
 # NOTE: # Requires sourcing the multiplot function for ggplot2
-source('~/Documents/Working/~RCode/MyRCode/functions/multiplot.R')
+source('~/Documents/Working/~RCode/MyRCode/functions_repo/functions/startup/multiplot.R')
 # Requires library(nFactors)
 ## First version DATE. Revised DATE  4 Mar 2013
 # ----------------------------------------------------------------------
@@ -16,31 +16,31 @@ source('~/Documents/Working/~RCode/MyRCode/functions/multiplot.R')
 eigen.boot.comp <- function (m1,m2,my_title) {
     require(nFactors)
 # Assign the matrixes --------------------------------------------------
-eigpre<-  svd(m1)      
-eigpre <- eigpre$d
-eigapis<- svd(m2)
-eigapis<- eigapis$d
+eig1<-  svd(m1)      
+eig1 <- eig1$d
+eig2<- svd(m2)
+eig2<- eig2$d
 # ----------------------------------------------------------------------
 # Bootstrap distributions study of the eigenvalues
-eigBootpre<-eigenBootParallel(m1, quantile=0.95, nboot=1000,
+eigBoot1<-eigenBootParallel(m1, quantile=0.95, nboot=1000,
                               option="bootstrap",
                               cor=F, model="components")
-eigBootapis<-eigenBootParallel(m2, quantile=0.95, nboot=1000,
+eigBoot2<-eigenBootParallel(m2, quantile=0.95, nboot=1000,
                                option="bootstrap",
                                cor=F, model="components")
 # Plots with ggplot2. ---------------------------------------------------
 # We first bind the index of the eigenvalues with their observed value.
 # We trimm eigenvalues <0.
 # For pre-Apis period.
-zz1 <- data.frame(cbind(x= c(1:length(eigpre[eigpre>=0])), 
-                        y= eigpre[eigpre>=0]))
-zz1 <- data.frame(cbind(zz1,mean=eigBootpre$mean[1:dim(zz1)[1]],
-                        sd= eigBootpre$mean[1:dim(zz1)[1]]))
+zz1 <- data.frame(cbind(x= c(1:length(eig1[eig1>=0])), 
+                        y= eig1[eig1>=0]))
+zz1 <- data.frame(cbind(zz1,mean=eigBoot1$mean[1:dim(zz1)[1]],
+                        sd= eigBoot1$mean[1:dim(zz1)[1]]))
 # For Apis period.
-zz2 <- data.frame(cbind(x= c(1:length(eigapis[eigapis>=0])), 
-                        y= eigapis[eigapis>=0]))
-zz2 <- data.frame(cbind(zz2,mean=eigBootapis$mean[1:dim(zz2)[1]],
-                        sd= eigBootapis$mean[1:dim(zz2)[1]]))
+zz2 <- data.frame(cbind(x= c(1:length(eig2[eig2>=0])), 
+                        y= eig2[eig2>=0]))
+zz2 <- data.frame(cbind(zz2,mean=eigBoot2$mean[1:dim(zz2)[1]],
+                        sd= eigBoot2$mean[1:dim(zz2)[1]]))
 # Plots. Rank order of eigenvalues with bootstraped CI's. ---------------
 # Pre-Apis Observed eigenvalues
 p1 <- ggplot(data= zz1, aes(x= x, y= y)) + 
@@ -66,9 +66,9 @@ p1 <- ggplot(data= zz1, aes(x= x, y= y)) +
                size=2, shape=21, fill="red",colour="red") 
 
 # Spectral distribution of the two matrices. ----------------------------
-z1 <- data.frame(append(as.vector(eigpre),as.vector(-eigpre)))  
+z1 <- data.frame(append(as.vector(eig1),as.vector(-eig1)))  
 colnames(z1)<- "values"
-z2 <- data.frame(append(as.vector(eigapis),as.vector(-eigapis)))  
+z2 <- data.frame(append(as.vector(eig2),as.vector(-eig2)))  
 colnames(z2)<- "values"
 # Eigenvalues histogram -------------------------------------------------
 p2 <- ggplot(z1, aes(x=values)) +
@@ -80,7 +80,7 @@ p2 <- ggplot(z1, aes(x=values)) +
     xlim(min(min(z1),min(z2))-1, max(max(z1),max(z2))+1)
 #........................................................................
 # Requires sourcing the multiplot function for ggplot2
-# source('~/Documents/Working/~RCode/MyRCode/functions/multiplot.R')    
+source('~/Documents/Working/~RCode/MyRCode/functions_repo/functions/startup/multiplot.R')    
 multiplot(p1, p2, cols=2)
 }
 # -----------------------------------------------------------------------

@@ -1,10 +1,10 @@
 eigenboot <- function(mat, nperm=10000)  {
 #-----------------------------------------------------------------------
-# Function to estimate the igenvalues of random matrices
+# Function to estimate the eigenvalues of random matrices
 ## Bootstrapping the eigenvalues
 #	also estimate the 95th percentile   
-#	of the bootstrap dist'n of the mean, and
-#	its jackknife-after-bootstrap  standard error  
+#	of the bootstrap distribution of the mean, and
+#	its jackknife-after-bootstrap standard error  
 require(boot)
 require(ca)
 require(vegan)
