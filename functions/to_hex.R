@@ -3,7 +3,7 @@
 # and output a text string.
 # 3 December 2023. Sevilla. Pedro Jordano.
 # ----------------------------------------------------------------
-## First version 12 Jan 2022 Revised 3 December 2033
+## First version 12 Jan 2022 Revised 3 December 2023
 # ----------------------------------------------------------------
 tohex <- function(mystring)  {
 # 
